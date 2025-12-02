@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pago con tarjeta</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body class="bg-[#FAF3EC] min-h-screen">
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="max-w-4xl mx-auto py-12 px-6">
+
+      <!-- Botón Previous -->
+      <button
+        class="flex items-center gap-2 bg-[#D89B5B] text-white font-medium px-5 py-2 rounded-md shadow hover:bg-[#c27d3c] transition mb-10"
+        onclick="history.back()"
+      >
+        <i class="fa-solid fa-arrow-left"></i>
+        Anterior
+      </button>
+
+      <!-- Formulario de pago -->
+      <div class="space-y-10">
+
+        <!-- No. Tarjeta -->
+        <div class="space-y-2">
+          <label class="block text-lg font-semibold text-neutral-800">
+            No. Tarjeta
+          </label>
+
+          <input
+            type="text"
+            placeholder="0000 000000 00000"
+            class="w-full border border-[#E2CBB7] bg-[#F8EFE7] text-neutral-700
+                   px-4 py-3 rounded-md shadow-sm outline-none placeholder:text-[#D1B8A2]"
+          />
+        </div>
+
+        <!-- Vencimiento + CVV -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <div class="space-y-2">
+            <label class="block text-lg font-semibold text-neutral-800">
+              Vencimiento
+            </label>
+            <input
+              type="text"
+              placeholder="MM/YY"
+              class="w-full border border-[#E2CBB7] bg-[#F8EFE7] 
+                     px-4 py-3 rounded-md shadow-sm placeholder:text-[#D1B8A2]"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-lg font-semibold text-neutral-800">
+              CVV
+            </label>
+            <input
+              type="text"
+              placeholder="•••"
+              class="w-full border border-[#E2CBB7] bg-[#F8EFE7] 
+                     px-4 py-3 rounded-md shadow-sm placeholder:text-[#D1B8A2]"
+            />
+          </div>
+
+        </div>
+
+        <!-- Total -->
+        <p class="text-xl font-semibold text-neutral-900 mt-6">
+          Total: <span class="font-bold">$69.90</span>
+        </p>
+
+        <!-- BOTÓN PAGAR AHORA -->
+        <div class="flex justify-end mt-4">
+          <button
+            class="bg-[#556B5A] hover:bg-[#405646] text-white font-semibold 
+                   px-10 py-3 rounded-md shadow-md transition"
+                   onclick="window.location.href = 'pago-exitoso.html'"
+          >
+            Pagar Ahora
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </body>
+</html>

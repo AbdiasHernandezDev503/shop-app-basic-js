@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pago exitoso</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome (solo si querés usar el ícono de check) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body class="bg-[#FAF3EC] min-h-screen flex items-center justify-center">
+    <!-- CARD PRINCIPAL -->
+    <div
+      class="w-full max-w-xl bg-[#FAF3EC] shadow-md rounded-xl px-10 py-10 text-center"
+    >
+      <!-- Logo -->
+      <div class="flex flex-col items-center mb-6">
+        <!-- Usá tu logo existente -->
+        <img
+          src="../images/logo.png"
+          alt="El Faro del Libro"
+          class="w-16 mb-2"
+        />
+        <span class="text-lg font-bold tracking-wide text-[#C5573E]">
+          EL FARO<br />
+          DEL LIBRO
+        </span>
+      </div>
+
+      <!-- Icono de check -->
+      <div
+        class="w-14 h-14 mx-auto mb-6 rounded-full border-2 border-[#556B5A] flex items-center justify-center"
+      >
+        <i class="fa-solid fa-check text-2xl text-[#556B5A]"></i>
+      </div>
+
+      <!-- Mensajes -->
+      <h1 class="text-xl md:text-2xl font-bold text-neutral-900 mb-4">
+        Su pago ha sido exitoso
+      </h1>
+
+      <p class="text-base md:text-lg font-semibold text-neutral-900 mb-4">
+        Gracias por su compra.
+      </p>
+
+      <p class="text-base md:text-lg text-neutral-900 mb-2">
+        Tu número de orden es
+        <span class="font-extrabold">#8023902</span>
+      </p>
+
+      <p class="text-sm md:text-base text-neutral-900 mb-8">
+        Favor pasar en un plazo de 24 horas a retirar su pedido.
+      </p>
+
+      <!-- Botón Continuar -->
+      <div class="mt-4">
+        <button
+          class="bg-[#556B5A] hover:bg-[#405646] text-white font-semibold px-10 py-3 rounded-md shadow-md transition"
+          onclick="window.location.href = 'resumen-pedido.html'"
+        >
+          Continuar
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
