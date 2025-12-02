@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="bg-[#F6F1EB] w-[85%] max-w-3xl rounded-xl shadow-xl p-8 relative">
+
+  <!-- Cerrar -->
+  <button 
+    class="absolute top-4 right-4 text-2xl text-gray-600 hover:text-black"
+    onclick="closeModal()">
+    &times;
+  </button>
+
+  <h2 class="text-2xl font-semibold mb-6">Carrito de Compra</h2>
+
+  <!-- TABLA -->
+  <div class="border-2 border-orange-200 rounded-lg overflow-hidden">
+
+    <table class="w-full text-left">
+      <thead class="bg-[#FAE8D6]">
+        <tr class="text-gray-700 font-semibold text-sm">
+          <th class="py-3 px-4 w-1/2">Producto</th>
+          <th class="py-3 px-4 w-1/6">Precio</th>
+          <th class="py-3 px-4 w-1/6">Cantidad</th>
+          <th class="py-3 px-4 w-1/6">Sub Total</th>
+        </tr>
+      </thead>
+
+      <tbody class="text-sm">
+
+        <tr class="border-t border-orange-200">
+          <td class="py-3 px-4">LIGHTLARK 01 LIGHTLARK (CANTOS TINTADOS)</td>
+          <td class="py-3 px-4">$34.95</td>
+          <td class="py-3 px-4">1</td>
+          <td class="py-3 px-4">$34.95</td>
+        </tr>
+
+        <tr class="border-t border-orange-200">
+          <td class="py-3 px-4">HIJAS DE LA VENGANZA</td>
+          <td class="py-3 px-4">$34.95</td>
+          <td class="py-3 px-4">1</td>
+          <td class="py-3 px-4">$34.95</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- Total -->
+  <div class="flex justify-end mt-6 pr-4">
+    <span class="text-xl font-semibold">Total: $ 69.90</span>
+  </div>
+
+  <!-- Botones -->
+  <div class="flex justify-between items-center mt-6 px-4">
+
+    <button class="bg-white border border-gray-300 rounded-lg shadow px-4 py-2 hover:bg-gray-100">
+      <i class="fa-solid fa-trash text-xl text-red-700"></i>
+    </button>
+
+    <button 
+      class="border border-orange-400 text-orange-700 px-6 py-2 rounded-lg font-semibold hover:bg-orange-100"
+      onclick="closeModal()">
+      Cerrar
+    </button>
+
+    <button class="bg-green-700 text-white px-10 py-2 rounded-lg shadow hover:bg-green-800">
+      Pagar
+    </button>
+
+  </div>
+
+</d>
+</body>
+</html>
