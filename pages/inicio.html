@@ -85,79 +85,7 @@
     </div>
 
     <!-- PRODUCTOS -->
-    <div class="w-full flex flex-wrap gap-8 justify-center mt-10 pb-20">
-      <!-- CARD 1 -->
-      <div
-        class="bg-white border rounded-xl shadow p-4 w-64 flex flex-col items-center"
-      >
-        <img
-          src="assets/libros/libro1.png"
-          class="w-44 h-64 object-cover rounded"
-        />
-
-        <p class="text-center font-semibold mt-3">
-          A LA DERIVA CONTIGO (CANTOS TINTADOS)
-        </p>
-        <p class="text-sm text-gray-600">Autor: BETH OLEARY</p>
-
-        <p class="font-bold mt-2">$25.00</p>
-
-        <button
-          class="mt-4 bg-green-700 text-white px-6 py-2 rounded-lg shadow hover:bg-green-800"
-        >
-          Detalles
-        </button>
-
-        <i class="fa-regular fa-heart text-xl mt-3 text-gray-700"></i>
-      </div>
-
-      <!-- CARD 2 -->
-      <div
-        class="bg-white border rounded-xl shadow p-4 w-64 flex flex-col items-center"
-      >
-        <img
-          src="assets/libros/libro2.png"
-          class="w-44 h-64 object-cover rounded"
-        />
-
-        <p class="text-center font-semibold mt-3">A Sir Phillip, con Amor</p>
-        <p class="text-sm text-gray-600">Autor: Julia Quin</p>
-
-        <p class="font-bold mt-2">$22.50</p>
-
-        <button
-          class="mt-4 bg-[#556B5A] text-white px-6 py-2 rounded-lg shadow hover:bg-green-800"
-        >
-          Detalles
-        </button>
-
-        <i class="fa-regular fa-heart text-xl mt-3 text-gray-700"></i>
-      </div>
-
-      <!-- CARD 3 -->
-      <div
-        class="bg-white border rounded-xl shadow p-4 w-64 flex flex-col items-center"
-      >
-        <img
-          src="assets/libros/libro3.png"
-          class="w-44 h-64 object-cover rounded"
-        />
-
-        <p class="text-center font-semibold mt-3">A Clash of Kings: Book 2</p>
-        <p class="text-sm text-gray-600">Autor: George R.R. Martin</p>
-
-        <p class="font-bold mt-2">$30.50</p>
-
-        <button
-          onclick="openDetailModal()"
-          class="mt-4 bg-green-700 text-white px-6 py-2 rounded-lg shadow hover:bg-green-800"
-        >
-          Detalles
-        </button>
-
-        <i class="fa-regular fa-heart text-xl mt-3 text-gray-700"></i>
-      </div>
-    </div>
+    <div id="productosContainer" class="w-full flex flex-wrap gap-8 justify-center mt-10 pb-20"></div>
 
     <!--  MODAL DE CARRITO -->
     <!-- Modal Overlay (vacío hasta que carguemos contenido) -->
@@ -253,6 +181,6 @@
       </div>
     </div>
 
-    <script src="../js/main.js"></script>
+    <script type="module" src="../js/main.js"></script>
   </body>
 </html>
