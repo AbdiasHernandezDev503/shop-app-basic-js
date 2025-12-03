@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi cuenta - El Faro del Libro</title>
+
+    <!-- Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body
+    class="bg-[#F4EDE6] min-h-screen flex flex-col"
+    style="font-family: 'Montserrat', sans-serif;"
+  >
+    <!-- HEADER: logo esquina superior izquierda -->
+    <header class="w-full py-4 px-6">
+      <div class="flex items-center gap-3">
+        <img src="../images/logo.png" alt="El Faro del Libro" class="w-32 h-auto" />
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1 flex justify-center">
+      <div class="w-full max-w-5xl px-6 pb-10">
+        <!-- Título -->
+        <h1 class="text-2xl md:text-3xl font-semibold text-[#7B3A24] text-center mb-10">
+          Mi cuenta
+        </h1>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div
+          class="bg-[#F7F1EA] rounded-xl shadow-sm px-8 py-10 grid gap-10 md:grid-cols-[1.3fr,1fr]"
+        >
+          <!-- COLUMNA IZQUIERDA: Sucursal + Favoritos / Historial -->
+          <div class="flex flex-col justify-between">
+            <!-- Sucursal favorita -->
+            <div class="w-full">
+              <h2 class="text-lg font-semibold text-[#7B3A24] mb-4">
+                Sucursal favorita
+              </h2>
+
+              <div class="bg-[#F3ECE4] rounded-lg shadow-sm px-5 py-4 max-w-md">
+                <p id="sucursalTitulo" class="text-base font-semibold text-[#3D3D3D]">
+                  Multiplaza, Antiguo Cuscatlán
+                </p>
+                <p id="sucursalDescripcion" class="text-sm text-[#6C6C6C] mt-1">
+                  Centro Comercial Multiplaza, Nivel 2, Antiguo Cuscatlán
+                </p>
+              </div>
+
+              <!-- Enlace para cambiar sucursal (abre modal) -->
+              <div class="mt-3">
+                <button
+                  type="button"
+                  class="text-sm text-[#7B3A24] hover:text-[#A05A39] underline-offset-2 hover:underline"
+                  onclick="abrirModalSucursales()"
+                >
+                  Cambiar sucursal favorita
+                </button>
+              </div>
+            </div>
+
+            <!-- Favoritos / Historial -->
+            <div class="mt-8 space-y-4">
+              <button
+                type="button"
+                class="flex items-center justify-start gap-3 text-[#7B3A24] hover:text-[#A05A39] transition"
+              >
+                <i class="fa-regular fa-heart text-lg"></i>
+                <span class="text-base font-medium">Favoritos</span>
+              </button>
+
+              <button
+                type="button"
+                class="flex items-center justify-start gap-3 text-[#7B3A24] hover:text-[#A05A39] transition"
+              >
+                <i class="fa-solid fa-box-archive text-lg"></i>
+                <span class="text-base font-medium">Historial</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- COLUMNA DERECHA: Detalles de la cuenta + Cerrar sesión -->
+          <div class="flex flex-col justify-between items-start">
+            <div class="w-full text-left">
+              <h2 class="text-lg font-semibold text-[#7B3A24] mb-4">
+                Detalles de la cuenta
+              </h2>
+
+              <p class="text-base font-semibold text-[#3D3D3D] mb-1">
+                Paola Hernandez
+              </p>
+
+              <p class="text-sm text-[#6C6C6C] mb-1">
+                correo: paola.hernandez32@gmail.com
+              </p>
+              <p class="text-sm text-[#6C6C6C] mb-1">
+                País: El Salvador
+              </p>
+              <p class="text-sm text-[#6C6C6C]">
+                Teléfono: +503 7636 9839
+              </p>
+            </div>
+
+            <!-- Botón Cerrar sesión -->
+            <div class="mt-8 w-full flex md:justify-end">
+              <button
+                type="button"
+                class="bg-[#556B5A] hover:bg-[#435446] text-white text-sm font-medium
+                       px-8 py-2 rounded-md shadow-sm transition"
+                onclick="window.location.href='login.html'"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODAL SELECCIÓN DE SUCURSAL -->
+    <div
+      id="modalSucursales"
+      class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-[#F7F1EA] rounded-xl shadow-lg w-full max-w-lg mx-4">
+        <!-- Header modal -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-[#E0D3C4]">
+          <h2 class="text-lg font-semibold text-[#7B3A24]">
+            Seleccionar sucursal favorita
+          </h2>
+          <button
+            type="button"
+            class="text-[#7B3A24] hover:text-[#A05A39]"
+            onclick="cerrarModalSucursales()"
+          >
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Body modal -->
+        <div class="px-6 py-4 space-y-3">
+          <!-- Opción 1 -->
+          <label
+            class="flex items-start gap-3 p-3 rounded-lg border border-[#E0D3C4] hover:border-[#7B3A24] cursor-pointer"
+          >
+            <input
+              type="radio"
+              name="sucursalRadio"
+              value="ramblas"
+              class="mt-1"
+            />
+            <div>
+              <p class="text-sm font-semibold text-[#3D3D3D]">
+                Centro comercial, Las Ramblas
+              </p>
+              <p class="text-xs text-[#6C6C6C]">
+                Centro Comercial Las Ramblas, Local B-59, Ciudad Merliot
+              </p>
+            </div>
+          </label>
+
+          <!-- Opción 2 -->
+          <label
+            class="flex items-start gap-3 p-3 rounded-lg border border-[#E0D3C4] hover:border-[#7B3A24] cursor-pointer"
+          >
+            <input
+              type="radio"
+              name="sucursalRadio"
+              value="multiplaza"
+              class="mt-1"
+            />
+            <div>
+              <p class="text-sm font-semibold text-[#3D3D3D]">
+                Multiplaza, Antiguo Cuscatlán
+              </p>
+              <p class="text-xs text-[#6C6C6C]">
+                Centro Comercial Multiplaza, Nivel 2, Antiguo Cuscatlán
+              </p>
+            </div>
+          </label>
+
+          <!-- Opción 3 -->
+          <label
+            class="flex items-start gap-3 p-3 rounded-lg border border-[#E0D3C4] hover:border-[#7B3A24] cursor-pointer"
+          >
+            <input
+              type="radio"
+              name="sucursalRadio"
+              value="metrocentro"
+              class="mt-1"
+            />
+            <div>
+              <p class="text-sm font-semibold text-[#3D3D3D]">
+                Metrocentro, San Salvador
+              </p>
+              <p class="text-xs text-[#6C6C6C]">
+                Centro Comercial Metrocentro, Local 123, San Salvador
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <!-- Footer modal -->
+        <div class="flex justify-end gap-3 px-6 py-4 border-t border-[#E0D3C4]">
+          <button
+            type="button"
+            class="text-sm text-[#7B3A24] hover:text-[#A05A39]"
+            onclick="cerrarModalSucursales()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="bg-[#556B5A] hover:bg-[#435446] text-white text-sm font-medium
+                   px-5 py-2 rounded-md shadow-sm transition"
+            onclick="guardarSucursalFavorita()"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Datos de sucursales
+      const sucursales = {
+        ramblas: {
+          titulo: "Centro comercial, Las Ramblas",
+          descripcion:
+            "Centro Comercial Las Ramblas, Local B-59, Ciudad Merliot",
+        },
+        multiplaza: {
+          titulo: "Multiplaza, Antiguo Cuscatlán",
+          descripcion:
+            "Centro Comercial Multiplaza, Nivel 2, Antiguo Cuscatlán",
+        },
+        metrocentro: {
+          titulo: "Metrocentro, San Salvador",
+          descripcion:
+            "Centro Comercial Metrocentro, Local 123, San Salvador",
+        },
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const titulo = document.getElementById("sucursalTitulo");
+        const descripcion = document.getElementById("sucursalDescripcion");
+        const modal = document.getElementById("modalSucursales");
+
+        function aplicarSucursal(id) {
+          const data = sucursales[id];
+          if (!data) return;
+          titulo.textContent = data.titulo;
+          descripcion.textContent = data.descripcion;
+        }
+
+        // Sucursal por defecto
+        let actual = "multiplaza";
+        aplicarSucursal(actual);
+
+        // Marcar radio correspondiente en el modal
+        const radioActual = document.querySelector(
+          `input[name="sucursalRadio"][value="${actual}"]`
+        );
+        if (radioActual) {
+          radioActual.checked = true;
+        }
+
+        // Funciones globales usadas en los onclick del HTML
+        window.abrirModalSucursales = function () {
+          modal.classList.remove("hidden");
+        };
+
+        window.cerrarModalSucursales = function () {
+          modal.classList.add("hidden");
+        };
+
+        window.guardarSucursalFavorita = function () {
+          const seleccionado = document.querySelector(
+            'input[name="sucursalRadio"]:checked'
+          );
+          if (!seleccionado) return;
+          const id = seleccionado.value;
+          aplicarSucursal(id);
+          cerrarModalSucursales();
+        };
+      });
+    </script>
+  </body>
+</html>
