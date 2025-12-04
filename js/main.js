@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", actualizarTotalCarrito);
 
 async function actualizarTotalCarrito() {
   const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
-  const totalSpan = document.getElementById("cartTotal");
+  const totalSpan = document.getElementById("cartTotalSpan");
 
   if (!usuario) {
     totalSpan.textContent = "$0.00";
