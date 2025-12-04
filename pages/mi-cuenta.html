@@ -291,68 +291,96 @@
       }
     </script>
 
-    <script>
-      // Datos de sucursales
-      const sucursales = {
-        ramblas: {
-          titulo: "Centro comercial, Las Ramblas",
-          descripcion:
-            "Centro Comercial Las Ramblas, Local B-59, Ciudad Merliot",
-        },
-        multiplaza: {
-          titulo: "Multiplaza, Antiguo Cuscatlán",
-          descripcion:
-            "Centro Comercial Multiplaza, Nivel 2, Antiguo Cuscatlán",
-        },
-        metrocentro: {
-          titulo: "Metrocentro, San Salvador",
-          descripcion: "Centro Comercial Metrocentro, Local 123, San Salvador",
-        },
-      };
+  <script>
+  // Datos de sucursales
+  const sucursales = {
+    ramblas: {
+      titulo: "Centro comercial, Las Ramblas",
+      descripcion:
+        "Centro Comercial Las Ramblas, Local B-59, Ciudad Merliot",
+    },
+    multiplaza: {
+      titulo: "Multiplaza, Antiguo Cuscatlán",
+      descripcion:
+        "Centro Comercial Multiplaza, Nivel 2, Antiguo Cuscatlán",
+    },
+    metrocentro: {
+      titulo: "Metrocentro, San Salvador",
+      descripcion: "Centro Comercial Metrocentro, Local 123, San Salvador",
+    },
+  };
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const titulo = document.getElementById("sucursalTitulo");
-        const descripcion = document.getElementById("sucursalDescripcion");
-        const modal = document.getElementById("modalSucursales");
+  document.addEventListener("DOMContentLoaded", () => {
+    const titulo = document.getElementById("sucursalTitulo");
+    const descripcion = document.getElementById("sucursalDescripcion");
+    const modal = document.getElementById("modalSucursales");
 
-        function aplicarSucursal(id) {
-          const data = sucursales[id];
-          if (!data) return;
-          titulo.textContent = data.titulo;
-          descripcion.textContent = data.descripcion;
+    // Aplica sucursal al DOM **y la guarda en localStorage**
+    function aplicarSucursal(id) {
+      const data = sucursales[id];
+      if (!data) return;
+
+      // Mostrar en Mi cuenta
+      titulo.textContent = data.titulo;
+      descripcion.textContent = data.descripcion;
+
+      // Guardar para otras páginas (pagos.html)
+      localStorage.setItem(
+        "sucursalSeleccionada",
+        JSON.stringify({
+          id,
+          titulo: data.titulo,
+          descripcion: data.descripcion,
+        })
+      );
+      console.log("Sucursal guardada:", id, data); // ayuda para debug
+    }
+
+    // Leer sucursal guardada (si existe), si no usar "multiplaza"
+    let actual = "multiplaza";
+    const sucursalGuardada = localStorage.getItem("sucursalSeleccionada");
+    if (sucursalGuardada) {
+      try {
+        const obj = JSON.parse(sucursalGuardada);
+        if (obj.id && sucursales[obj.id]) {
+          actual = obj.id;
         }
+      } catch (e) {
+        console.warn("Error leyendo sucursalSeleccionada:", e);
+      }
+    }
 
-        // Sucursal por defecto
-        let actual = "multiplaza";
-        aplicarSucursal(actual);
+    // Aplicar sucursal actual al cargar la página
+    aplicarSucursal(actual);
 
-        // Marcar radio correspondiente en el modal
-        const radioActual = document.querySelector(
-          `input[name="sucursalRadio"][value="${actual}"]`
-        );
-        if (radioActual) {
-          radioActual.checked = true;
-        }
+    // Marcar radio correspondiente en el modal
+    const radioActual = document.querySelector(
+      `input[name="sucursalRadio"][value="${actual}"]`
+    );
+    if (radioActual) {
+      radioActual.checked = true;
+    }
 
-        // Funciones globales usadas en los onclick del HTML
-        window.abrirModalSucursales = function () {
-          modal.classList.remove("hidden");
-        };
+    // Funciones globales usadas en los onclick del HTML
+    window.abrirModalSucursales = function () {
+      modal.classList.remove("hidden");
+    };
 
-        window.cerrarModalSucursales = function () {
-          modal.classList.add("hidden");
-        };
+    window.cerrarModalSucursales = function () {
+      modal.classList.add("hidden");
+    };
 
-        window.guardarSucursalFavorita = function () {
-          const seleccionado = document.querySelector(
-            'input[name="sucursalRadio"]:checked'
-          );
-          if (!seleccionado) return;
-          const id = seleccionado.value;
-          aplicarSucursal(id);
-          cerrarModalSucursales();
-        };
-      });
-    </script>
+    window.guardarSucursalFavorita = function () {
+      const seleccionado = document.querySelector(
+        'input[name="sucursalRadio"]:checked'
+      );
+      if (!seleccionado) return;
+      const id = seleccionado.value;
+      aplicarSucursal(id); // aquí también actualiza localStorage
+      cerrarModalSucursales();
+    };
+  });
+</script>
+
   </body>
 </html>

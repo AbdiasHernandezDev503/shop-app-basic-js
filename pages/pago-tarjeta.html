@@ -13,13 +13,14 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+
+    <!-- SweetAlert2 (para mensajes) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
 
   <body class="bg-[#FAF3EC] min-h-screen">
-
     <!-- CONTENEDOR PRINCIPAL -->
     <div class="max-w-4xl mx-auto py-12 px-6">
-
       <!-- Botón Previous -->
       <button
         class="flex items-center gap-2 bg-[#D89B5B] text-white font-medium px-5 py-2 rounded-md shadow hover:bg-[#c27d3c] transition mb-10"
@@ -31,7 +32,6 @@
 
       <!-- Formulario de pago -->
       <div class="space-y-10">
-
         <!-- No. Tarjeta -->
         <div class="space-y-2">
           <label class="block text-lg font-semibold text-neutral-800">
@@ -48,7 +48,6 @@
 
         <!-- Vencimiento + CVV -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
           <div class="space-y-2">
             <label class="block text-lg font-semibold text-neutral-800">
               Vencimiento
@@ -72,7 +71,6 @@
                      px-4 py-3 rounded-md shadow-sm placeholder:text-[#D1B8A2]"
             />
           </div>
-
         </div>
 
         <!-- Total -->
@@ -85,15 +83,193 @@
           <button
             class="bg-[#556B5A] hover:bg-[#405646] text-white font-semibold 
                    px-10 py-3 rounded-md shadow-md transition"
-                   onclick="window.location.href = 'pago-exitoso.html'"
+            onclick="window.location.href = 'pago-exitoso.html'"
           >
             Pagar Ahora
           </button>
         </div>
-
       </div>
-
     </div>
 
+    <!-- SCRIPT: funcionalidad de pago -->
+    <script type="module">
+      import { db } from "../js/firebase-loader.js";
+      import {
+        ref,
+        get,
+        set,
+        remove,
+      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+      // Leer inputs sin añadir IDs (usamos placeholders)
+      const numTarjetaInput = document.querySelector(
+        'input[placeholder="0000 000000 00000"]'
+      );
+      const vencInput = document.querySelector('input[placeholder="MM/YY"]');
+      const cvvInput = document.querySelector('input[placeholder="•••"]');
+
+      // Span del total (el que está dentro del <p> "Total:")
+      const totalSpan = document.querySelector("p.text-xl span.font-bold");
+
+      async function precargarTotal() {
+        const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+        if (!usuario || !usuario.id) {
+          window.location.href = "../index.html";
+          return;
+        }
+
+        try {
+          const carritoRef = ref(db, `usuarios/${usuario.id}/carrito`);
+          const snap = await get(carritoRef);
+
+          let total = 0;
+          if (snap.exists()) {
+            const carrito = snap.val();
+            Object.values(carrito).forEach((item) => {
+              const precio = parseFloat(item.precio) || 0;
+              const cantidad = Number(item.cantidad) || 0;
+              total += precio * cantidad;
+            });
+          }
+
+          if (totalSpan) {
+            totalSpan.textContent = `$${total.toFixed(2)}`;
+          }
+        } catch (error) {
+          console.error("Error cargando total en pago-tarjeta:", error);
+        }
+      }
+
+      async function procesarPago() {
+        const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+        if (!usuario || !usuario.id) {
+          Swal.fire({
+            icon: "warning",
+            title: "Debes iniciar sesión",
+            text: "Para realizar el pago debes iniciar sesión.",
+          });
+          return;
+        }
+
+        // Validaciones básicas
+        if (
+          !numTarjetaInput?.value.trim() ||
+          !vencInput?.value.trim() ||
+          !cvvInput?.value.trim()
+        ) {
+          Swal.fire({
+            icon: "warning",
+            title: "Datos incompletos",
+            text: "Por favor completa todos los campos de la tarjeta.",
+          });
+          return;
+        }
+
+        try {
+          const carritoRef = ref(db, `usuarios/${usuario.id}/carrito`);
+          const snapCarrito = await get(carritoRef);
+
+          if (!snapCarrito.exists()) {
+            Swal.fire({
+              icon: "info",
+              title: "Carrito vacío",
+              text: "No hay productos en tu carrito para pagar.",
+            });
+            return;
+          }
+
+          const carrito = snapCarrito.val();
+          let total = 0;
+          const items = [];
+
+          for (const [idLibro, item] of Object.entries(carrito)) {
+            const precio = parseFloat(item.precio) || 0;
+            const cantidad = Number(item.cantidad) || 0;
+            const subtotal = precio * cantidad;
+
+            total += subtotal;
+
+            items.push({
+              idLibro,
+              titulo: item.titulo,
+              precio,
+              cantidad,
+              subtotal,
+            });
+          }
+
+          const orderId = "ORD-" + Date.now();
+          const ahora = new Date();
+
+          // Usamos referencia y sucursal guardadas si existen
+          const referencia =
+            localStorage.getItem("referenciaPagoActual") || orderId;
+          const sucursalSeleccionada =
+            localStorage.getItem("sucursalSeleccionada");
+
+          const orden = {
+            id: orderId,
+            usuarioId: usuario.id,
+            fecha: ahora.toISOString(),
+            fecha_formateada: ahora.toLocaleString("es-SV", {
+              dateStyle: "long",
+              timeStyle: "short",
+            }),
+            total,
+            estado: "PAGADO",
+            metodoPago: "Tarjeta",
+            referencia,
+            sucursal: sucursalSeleccionada
+              ? JSON.parse(sucursalSeleccionada)
+              : null,
+            items,
+          };
+
+          const ordenRef = ref(db, `usuarios/${usuario.id}/ordenes/${orderId}`);
+          await set(ordenRef, orden);
+
+          // Guardar resumen para pago-exitoso y resumen-pedido
+          localStorage.setItem("ultimaOrden", JSON.stringify(orden));
+
+          // Vaciar carrito
+          await remove(carritoRef);
+
+          Swal.fire({
+            icon: "success",
+            title: "Pago realizado con éxito",
+            text: "Tu orden ha sido creada correctamente.",
+            confirmButtonColor: "#556B5A",
+            confirmButtonText: "Ver confirmación",
+          }).then(() => {
+            window.location.href = "pago-exitoso.html";
+          });
+        } catch (error) {
+          console.error("Error procesando el pago:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error al procesar el pago",
+            text: "Ocurrió un problema. Intenta nuevamente.",
+          });
+        }
+      }
+
+      // Al cargar la página:
+      document.addEventListener("DOMContentLoaded", () => {
+        // Pre-cargar el total real
+        precargarTotal();
+
+        // Reemplazar el onclick del botón para usar nuestra lógica
+        const pagarBtn = document.querySelector(
+          'button[onclick*="pago-exitoso.html"]'
+        );
+        if (pagarBtn) {
+          pagarBtn.removeAttribute("onclick");
+          pagarBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            procesarPago();
+          });
+        }
+      });
+    </script>
   </body>
 </html>

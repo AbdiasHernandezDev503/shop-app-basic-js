@@ -16,9 +16,10 @@
   </head>
 
   <body class="bg-[#F4EFE9]">
-    
     <!-- NAVBAR -->
-    <nav class="w-full flex items-center justify-between px-6 py-4 bg-[#F7F2EB] shadow">
+    <nav
+      class="w-full flex items-center justify-between px-6 py-4 bg-[#F7F2EB] shadow"
+    >
       <div class="flex items-center gap-3">
         <i class="fa-solid fa-bars text-xl cursor-pointer"></i>
         <img src="../images/logo.png" class="w-9" />
@@ -31,26 +32,28 @@
           placeholder="Hinted search text"
           class="w-full border border-gray-300 rounded-full py-2 px-4 pl-5 shadow text-sm outline-none"
         />
-        <i class="fa-solid fa-magnifying-glass absolute right-4 top-3 text-gray-500"></i>
+        <i
+          class="fa-solid fa-magnifying-glass absolute right-4 top-3 text-gray-500"
+        ></i>
       </div>
 
       <div class="flex items-center gap-6">
+        <!-- Usuario navbar -->
         <div class="flex items-center gap-2 cursor-pointer">
           <i class="fa-regular fa-user text-xl"></i>
-          <span class="font-medium">Paola</span>
+          <span id="pagosNavbarUserName" class="font-medium">Invitado</span>
         </div>
 
+        <!-- Carrito navbar -->
         <i class="fa-solid fa-cart-shopping cursor-pointer text-xl"></i>
-        <span class="font-semibold">$69.90</span>
+        <span id="pagosNavbarCartTotal" class="font-semibold">$0.00</span>
       </div>
     </nav>
 
     <!-- CONTENIDO DE PAGOS -->
     <div class="min-h-[calc(100vh-64px)] flex items-start justify-center pt-12">
       <div class="w-full max-w-6xl px-8 py-6 md:px-12">
-
         <div class="grid gap-10 md:grid-cols-2">
-
           <!-- COLUMNA IZQUIERDA -->
           <div>
             <h2 class="text-3xl font-semibold text-neutral-900 mb-12">
@@ -65,30 +68,44 @@
               </p>
 
               <div class="bg-[#F3F0EA] rounded-lg px-5 py-4 shadow-sm">
-                <p class="text-base font-semibold text-neutral-900">
-                  Centro comercial, Las Ramblas
+                <p
+                  id="pagosSucursalTitulo"
+                  class="text-base font-semibold text-neutral-900"
+                >
+                  Multiplaza, Antiguo Cuscatlán
                 </p>
-                <p class="text-sm text-neutral-700 mt-1">
-                  Centro Comercial Las Ramblas, Local B-59, Ciudad Merliot
+                <p
+                  id="pagosSucursalDescripcion"
+                  class="text-sm text-neutral-700 mt-1"
+                >
+                  Centro Comercial Multiplaza, Nivel 2, Antiguo Cuscatlán
                 </p>
               </div>
             </div>
 
             <p class="text-lg text-neutral-900">
               <span class="font-semibold">Referencia:</span>
-              <span class="ml-1 text-neutral-800">3019301</span>
+              <span id="pagosReferencia" class="ml-1 text-neutral-800">
+                3019301
+              </span>
             </p>
           </div>
 
           <!-- COLUMNA DERECHA -->
           <div class="flex flex-col">
-
             <!-- Nombre del usuario -->
             <div class="flex items-center gap-3 mb-8">
-              <div class="w-10 h-10 rounded-full bg-[#E2DDD5] flex items-center justify-center text-neutral-700">
+              <div
+                class="w-10 h-10 rounded-full bg-[#E2DDD5] flex items-center justify-center text-neutral-700"
+              >
                 <span class="text-lg">👤</span>
               </div>
-              <span class="text-base font-medium text-neutral-900">Paola</span>
+              <span
+                id="pagosRightUserName"
+                class="text-base font-medium text-neutral-900"
+              >
+                Invitado
+              </span>
             </div>
 
             <!-- Tarjetas aceptadas -->
@@ -97,8 +114,14 @@
                 Se aceptan las siguientes tarjetas
               </p>
               <div class="flex items-center gap-3">
-                <img src="../images/visa_card.png" class="h-14 rounded-md shadow" />
-                <img src="../images/mastercard.png" class="h-14 rounded-md shadow" />
+                <img
+                  src="../images/visa_card.png"
+                  class="h-14 rounded-md shadow"
+                />
+                <img
+                  src="../images/mastercard.png"
+                  class="h-14 rounded-md shadow"
+                />
               </div>
             </div>
 
@@ -106,7 +129,7 @@
             <div class="mb-10">
               <p class="text-lg text-neutral-900 text-right">
                 <span class="font-semibold mr-1">Total:</span>
-                <span class="font-bold">$69.90</span>
+                <span id="pagosPageTotal" class="font-bold">$0.00</span>
               </p>
             </div>
 
@@ -120,12 +143,108 @@
                 <span class="text-lg">➜</span>
               </button>
             </div>
-
           </div>
-
         </div>
       </div>
     </div>
 
+    <!-- SCRIPT: carga usuario activo, sucursal, referencia y total del carrito -->
+    <script type="module">
+      import { db } from "../js/firebase-loader.js";
+      import {
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+      async function cargarDatosPagos() {
+        // 1. Obtener usuario activo
+        const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+
+        if (!usuario || !usuario.id) {
+          window.location.href = "../index.html";
+          return;
+        }
+
+        const nombre = usuario.nombre || "Usuario";
+
+        // 2. Nombres
+        const navbarNameSpan = document.getElementById("pagosNavbarUserName");
+        const rightNameSpan = document.getElementById("pagosRightUserName");
+
+        if (navbarNameSpan) navbarNameSpan.textContent = nombre;
+        if (rightNameSpan) rightNameSpan.textContent = nombre;
+
+        // 3. Sucursal seleccionada (desde localStorage)
+        const sucursalTituloEl = document.getElementById("pagosSucursalTitulo");
+        const sucursalDescEl = document.getElementById(
+          "pagosSucursalDescripcion"
+        );
+
+        let tituloSucursal = "Multiplaza, Antiguo Cuscatlán";
+        let descSucursal =
+          "Centro Comercial Multiplaza, Nivel 2, Antiguo Cuscatlán";
+
+        const sucursalGuardada = localStorage.getItem("sucursalSeleccionada");
+        console.log("sucursalSeleccionada en pagos:", sucursalGuardada);
+
+        if (sucursalGuardada) {
+          try {
+            const suc = JSON.parse(sucursalGuardada);
+            if (suc.titulo) tituloSucursal = suc.titulo;
+            if (suc.descripcion) descSucursal = suc.descripcion;
+          } catch (e) {
+            console.warn("Error leyendo sucursalSeleccionada en pagos:", e);
+          }
+        }
+
+        if (sucursalTituloEl) sucursalTituloEl.textContent = tituloSucursal;
+        if (sucursalDescEl) sucursalDescEl.textContent = descSucursal;
+
+        // 4. Referencia
+        const refSpan = document.getElementById("pagosReferencia");
+        if (refSpan) {
+          let referencia = localStorage.getItem("referenciaPagoActual");
+
+          if (!referencia) {
+            const ahora = Date.now().toString();
+            referencia = ahora.slice(-7);
+            localStorage.setItem("referenciaPagoActual", referencia);
+          }
+
+          refSpan.textContent = referencia;
+        }
+
+        // 5. Total del carrito
+        const navbarTotalSpan =
+          document.getElementById("pagosNavbarCartTotal");
+        const pageTotalSpan = document.getElementById("pagosPageTotal");
+
+        try {
+          const carritoRef = ref(db, `usuarios/${usuario.id}/carrito`);
+          const snap = await get(carritoRef);
+
+          let total = 0;
+
+          if (snap.exists()) {
+            const carrito = snap.val();
+
+            Object.values(carrito).forEach((item) => {
+              const precio = parseFloat(item.precio) || 0;
+              const cantidad = Number(item.cantidad) || 0;
+              total += precio * cantidad;
+            });
+          }
+
+          const totalFormateado = `$${total.toFixed(2)}`;
+
+          if (navbarTotalSpan) navbarTotalSpan.textContent = totalFormateado;
+          if (pageTotalSpan) pageTotalSpan.textContent = totalFormateado;
+        } catch (error) {
+          console.error("Error cargando datos de pago:", error);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", cargarDatosPagos);
+    </script>
   </body>
 </html>

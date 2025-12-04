@@ -52,7 +52,8 @@
 
       <p class="text-base md:text-lg text-neutral-900 mb-2">
         Tu número de orden es
-        <span class="font-extrabold">#8023902</span>
+        <!-- agregamos id para actualizarlo con JS -->
+        <span id="orderNumber" class="font-extrabold">#8023902</span>
       </p>
 
       <p class="text-sm md:text-base text-neutral-900 mb-8">
@@ -69,5 +70,30 @@
         </button>
       </div>
     </div>
+
+    <!-- SCRIPT: mostrar número real de la orden -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const ultimaOrdenJSON = localStorage.getItem("ultimaOrden");
+        if (!ultimaOrdenJSON) return;
+
+        try {
+          const orden = JSON.parse(ultimaOrdenJSON);
+          const spanNumero = document.getElementById("orderNumber");
+          if (!spanNumero) return;
+
+          // Usamos la referencia si existe, si no el id de la orden
+          const referencia = orden.referencia || orden.id;
+          if (referencia) {
+            spanNumero.textContent = "#" + referencia;
+          }
+
+          // Opcional: limpiar la referencia temporal para el próximo pago
+          localStorage.removeItem("referenciaPagoActual");
+        } catch (e) {
+          console.error("Error leyendo ultimaOrden:", e);
+        }
+      });
+    </script>
   </body>
 </html>
