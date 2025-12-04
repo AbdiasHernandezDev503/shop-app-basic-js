@@ -43,7 +43,10 @@
 
       <!-- Usuario -->
       <div class="flex items-center gap-6">
-        <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='./mi-cuenta.html'">
+        <div
+          class="flex items-center gap-2 cursor-pointer"
+          onclick="window.location.href='./mi-cuenta.html'"
+        >
           <i class="fa-regular fa-user text-xl"></i>
           <span id="userName" class="font-medium">Paola</span>
         </div>
@@ -52,7 +55,7 @@
           onclick="openModal()"
         ></i>
 
-        <span class="font-semibold">$120.5</span>
+        <span id="cartTotal" class="font-semibold">$0.00</span>
       </div>
     </nav>
 
@@ -141,42 +144,49 @@
         <ul class="flex flex-col gap-3">
           <li
             class="flex items-center gap-3 cursor-pointer hover:text-orange-700"
+            onclick="filtrarCategoria('Romance')"
           >
             <i class="fa-solid fa-book"></i> Romance
           </li>
 
           <li
             class="flex items-center gap-3 cursor-pointer hover:text-orange-700"
+            onclick="filtrarCategoria('Fantasia')"
           >
             <i class="fa-solid fa-book"></i> Fantasia
           </li>
 
           <li
             class="flex items-center gap-3 cursor-pointer hover:text-orange-700"
+            onclick="filtrarCategoria('Ciencia Ficcion')"
           >
             <i class="fa-solid fa-book"></i> Ciencia Ficcion
           </li>
 
           <li
             class="flex items-center gap-3 cursor-pointer hover:text-orange-700"
+            onclick="filtrarCategoria('Terror')"
           >
             <i class="fa-solid fa-book"></i> Terror
           </li>
 
           <li
             class="flex items-center gap-3 cursor-pointer hover:text-orange-700"
+            onclick="filtrarCategoria('Infantiles')"
           >
             <i class="fa-solid fa-book"></i> Infantiles
           </li>
 
           <li
             class="flex items-center gap-3 cursor-pointer hover:text-orange-700"
+            onclick="filtrarCategoria('Psicologia')"
           >
             <i class="fa-solid fa-book"></i> Psicologia
           </li>
 
           <li
             class="flex items-center gap-3 cursor-pointer hover:text-orange-700"
+            onclick="filtrarCategoria('Cocina')"
           >
             <i class="fa-solid fa-book"></i> Cocina
           </li>
@@ -185,5 +195,13 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="../js/main.js"></script>
+    <script>
+      window.addEventListener("pageshow", () => {
+        const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+        if (usuario) {
+          marcarFavoritos(usuario.id);
+        }
+      });
+    </script>
   </body>
 </html>

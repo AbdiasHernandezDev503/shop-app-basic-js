@@ -21,6 +21,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </head>
 
   <body
@@ -86,7 +89,8 @@
 
             <!-- Favoritos / Historial -->
             <div class="mt-8 space-y-4">
-              <button onclick="window.location.href='./favoritos.html'"
+              <button
+                onclick="window.location.href='./favoritos.html'"
                 type="button"
                 class="flex items-center justify-start gap-3 text-[#7B3A24] hover:text-[#A05A39] transition"
               >
@@ -136,7 +140,7 @@
               <button
                 type="button"
                 class="bg-[#556B5A] hover:bg-[#435446] text-white text-sm font-medium px-8 py-2 rounded-md shadow-sm transition"
-                onclick="window.location.href='../index.html'"
+                onclick="cerrarSesion()"
               >
                 Cerrar sesión
               </button>
@@ -269,6 +273,21 @@
         // Si guardas el país en Firebase, úsalo. Si no, ponemos El Salvador como predeterminado.
         document.getElementById("userPais").textContent =
           "País: " + (usuario.pais || "El Salvador");
+      }
+
+      window.cerrarSesion = function () {
+        // Eliminar usuario del LocalStorage
+        localStorage.removeItem("usuarioActivo");
+
+        Swal.fire({
+          icon: "success",
+          title: "Sesión cerrada",
+          text: "Has cerrado sesión correctamente.",
+          confirmButtonColor: "#556B5A",
+        }).then(() => {
+          // Redirigir al login
+          window.location.href = "../index.html";
+        });
       }
     </script>
 

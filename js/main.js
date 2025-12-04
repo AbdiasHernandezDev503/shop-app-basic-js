@@ -27,36 +27,168 @@ async function cargarLibros() {
       const libro = libros[id];
 
       const cardHTML = `
-        <div class="bg-white border rounded-xl shadow p-4 w-64 flex flex-col items-center">
+    <div class="bg-white border rounded-xl shadow p-4 w-64 flex flex-col items-center">
 
-          <img src="${
-            libro.imagen_url
-          }" class="w-44 h-64 object-cover rounded" />
+      <img src="${libro.imagen_url}" class="w-44 h-64 object-cover rounded" />
 
-          <p class="text-center font-semibold mt-3">${libro.titulo}</p>
+      <p class="text-center font-semibold mt-3">${libro.titulo}</p>
 
-          <p class="text-sm text-gray-600">Autor: ${libro.autor}</p>
+      <p class="text-sm text-gray-600">Autor: ${libro.autor}</p>
 
-          <p class="font-bold mt-2">$${libro.precio.toFixed(2)}</p>
+      <p class="font-bold mt-2">$${libro.precio.toFixed(2)}</p>
 
-          <button
-            class="mt-4 bg-green-700 text-white px-6 py-2 rounded-lg shadow hover:bg-green-800"
-            onclick="openDetailModal('${id}')"
-          >
-            Detalles
-          </button>
+      <button
+        class="mt-4 bg-green-700 text-white px-6 py-2 rounded-lg shadow hover:bg-green-800"
+        onclick="openDetailModal('${id}')"
+      >
+        Detalles
+      </button>
 
-          <i class="fa-regular fa-heart text-xl mt-3 text-gray-700"></i>
-        </div>
-      `;
+      <button onclick="toggleFavorito('${id}')" class="mt-3">
+        <i id="fav_${id}" class="fa-regular fa-heart text-xl text-gray-700 hover:text-red-600"></i>
+      </button>
+    </div>
+  `;
 
       contenedor.innerHTML += cardHTML;
     });
+
+    const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+    if (usuario) {
+      marcarFavoritos(usuario.id);
+    }
   } catch (error) {
     console.error("Error cargando libros:", error);
     contenedor.innerHTML =
       "<p class='text-red-500'>Error al cargar libros.</p>";
   }
+}
+
+// Ejecutar cuando cargue la página
+document.addEventListener("DOMContentLoaded", actualizarTotalCarrito);
+
+async function actualizarTotalCarrito() {
+  const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+  const totalSpan = document.getElementById("cartTotal");
+
+  if (!usuario) {
+    totalSpan.textContent = "$0.00";
+    return;
+  }
+
+  try {
+    // Leer carrito desde el nodo correcto
+    const carritoRef = ref(db, `usuarios/${usuario.id}/carrito`);
+    const snapCarrito = await get(carritoRef);
+
+    if (!snapCarrito.exists()) {
+      totalSpan.textContent = "$0.00";
+      return;
+    }
+
+    const carrito = snapCarrito.val();
+
+    // Obtener libros para obtener precios
+    const librosRef = ref(db, "libros");
+    const snapLibros = await get(librosRef);
+    if (!snapLibros.exists()) return;
+
+    const libros = snapLibros.val();
+
+    let total = 0;
+
+    Object.keys(carrito).forEach((idLibro) => {
+      const item = carrito[idLibro];
+      const precio = Number(libros[idLibro]?.precio) || 0;
+      const cantidad = Number(item.cantidad) || 1;
+
+      total += precio * cantidad;
+    });
+
+    totalSpan.textContent = `$${total.toFixed(2)}`;
+  } catch (error) {
+    console.error("Error al calcular total del carrito:", error);
+    totalSpan.textContent = "$0.00";
+  }
+}
+
+function getUsuarioActivo() {
+  return JSON.parse(localStorage.getItem("usuarioActivo"));
+}
+
+window.toggleFavorito = async function (idLibro) {
+  const usuario = getUsuarioActivo();
+
+  if (!usuario) {
+    Swal.fire({
+      icon: "warning",
+      title: "Inicia sesión",
+      text: "Debes iniciar sesión para guardar favoritos.",
+      confirmButtonColor: "#556B5A",
+    });
+    return;
+  }
+
+  const uid = usuario.id;
+  const favRef = ref(db, `usuarios/${uid}/favoritos/${idLibro}`);
+
+  try {
+    const snap = await get(favRef);
+
+    if (snap.exists()) {
+      await remove(favRef);
+
+      document
+        .getElementById(`fav_${idLibro}`)
+        .classList.remove("fa-solid", "text-red-600");
+      document
+        .getElementById(`fav_${idLibro}`)
+        .classList.add("fa-regular", "text-gray-700");
+
+      Swal.fire({
+        icon: "info",
+        title: "Eliminado de favoritos",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+    }
+    // Si NO existe → agregar favorito
+    else {
+      await set(favRef, true);
+
+      document
+        .getElementById(`fav_${idLibro}`)
+        .classList.remove("fa-regular", "text-gray-700");
+      document
+        .getElementById(`fav_${idLibro}`)
+        .classList.add("fa-solid", "text-red-600");
+
+      Swal.fire({
+        icon: "success",
+        title: "Agregado a favoritos",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+    }
+  } catch (error) {
+    console.error("Error manejando favoritos:", error);
+    Swal.fire("Error", "No se pudo actualizar favoritos", "error");
+  }
+};
+
+async function marcarFavoritos(userId) {
+  const snap = await get(ref(db, `usuarios/${userId}/favoritos`));
+  if (!snap.exists()) return;
+
+  const favoritos = snap.val();
+
+  Object.keys(favoritos).forEach((idLibro) => {
+    const icon = document.getElementById(`fav_${idLibro}`);
+    if (icon) {
+      icon.classList.remove("fa-regular", "text-gray-700");
+      icon.classList.add("fa-solid", "text-red-600");
+    }
+  });
 }
 
 // Ejecutar cuando cargue la página
@@ -204,43 +336,27 @@ window.openModal = async function () {
     const carrito = snapshot.val();
 
     Object.entries(carrito).forEach(([key, item]) => {
-      const subtotal = item.precio * item.cantidad;
+      const precio = Number(item.precio);
+      const cantidad = Number(item.cantidad);
+      const subtotal = precio * cantidad;
+
       total += subtotal;
 
       cartBody.innerHTML += `
-    <tr class="border-t border-orange-200">
-      <td class="py-3 px-4 flex items-center justify-between">
-        ${item.titulo}
-      </td>
-      <td class="py-3 px-4">$${item.precio.toFixed(2)}</td>
-      <td class="py-3 px-4">${item.cantidad}</td>
-      <td class="py-3 px-4">$${subtotal.toFixed(2)}</td>
-    </tr>
-  `;
+        <tr class="border-t border-orange-200">
+          <td class="py-3 px-4 flex items-center justify-between">
+            ${item.titulo}
+          </td>
+          <td class="py-3 px-4">$${precio.toFixed(2)}</td>
+          <td class="py-3 px-4">${cantidad}</td>
+          <td class="py-3 px-4">$${subtotal.toFixed(2)}</td>
+        </tr>
+      `;
     });
 
-    cartTotal.textContent = `$${total.toFixed(2)}`;
+    cartTotal.textContent = total.toFixed(2);
+    actualizarTotalCarrito();
   }, 50);
-};
-
-// Eliminar productos del carrito
-window.eliminarItem = async function (itemId) {
-  const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
-  if (!usuario) return;
-
-  const itemRef = ref(db, `usuarios/${usuario.id}/carrito/${itemId}`);
-
-  await remove(itemRef);
-
-  Swal.fire({
-    icon: "success",
-    title: "Eliminado",
-    text: "El producto fue eliminado del carrito.",
-    confirmButtonColor: "#556B5A",
-  });
-
-  // Recargar modal
-  openModal();
 };
 
 // uncion para vaciar el carrito
@@ -258,7 +374,7 @@ window.vaciarCarrito = async function () {
     text: "Todos los productos han sido eliminados.",
     confirmButtonColor: "#556B5A",
   });
-
+  actualizarTotalCarrito();
   openModal(); // recargar modal vacía
 };
 
@@ -341,6 +457,8 @@ window.agregarAlCarrito = async function (idLibro) {
     // Guardar en Firebase
     await set(itemCarritoRef, nuevoItem);
 
+    actualizarTotalCarrito();
+
     Swal.fire({
       icon: "success",
       title: "Agregado al carrito",
@@ -351,6 +469,11 @@ window.agregarAlCarrito = async function (idLibro) {
     console.error("Error agregando al carrito:", error);
     Swal.fire("Error", "No se pudo agregar al carrito.", "error");
   }
+};
+
+window.filtrarCategoria = function (categoria) {
+  const query = encodeURIComponent(categoria.trim());
+  window.location.href = `search.html?categoria=${query}`;
 };
 
 // ------ Cargar información del usuario activo ------

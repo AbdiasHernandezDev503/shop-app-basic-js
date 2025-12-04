@@ -21,6 +21,7 @@
       }
     </style>
   </head>
+
   <body class="bg-[#F7F2EB] text-[#4B3425]">
     <!-- NAVBAR -->
     <nav
@@ -32,7 +33,6 @@
           <i class="fa-solid fa-bars"></i>
         </button>
 
-        <!-- Logo más grande -->
         <img
           src="../images/logo.png"
           class="w-12"
@@ -43,7 +43,7 @@
         </span>
       </div>
 
-      <!-- Buscador SOLO input -->
+      <!-- Buscador -->
       <div
         class="flex-1 flex justify-center order-3 w-full lg:w-auto lg:order-none"
       >
@@ -63,16 +63,8 @@
       <div class="flex items-center gap-4 text-sm">
         <div class="flex items-center gap-2">
           <i class="fa-regular fa-user text-lg"></i>
-          <span>Paola</span>
+          <span id="userName">Invitado</span>
         </div>
-        <button class="relative">
-          <i class="fa-solid fa-cart-shopping text-lg"></i>
-          <span
-            class="absolute -top-2 -right-2 bg-[#C5573E] text-white text-[10px] leading-none px-1.5 py-[2px] rounded-full"
-            >3</span
-          >
-        </button>
-        <span class="font-semibold">$120.50</span>
       </div>
     </nav>
 
@@ -83,7 +75,8 @@
           Favoritos
         </h1>
         <p class="text-sm sm:text-base text-gray-700 mt-2">
-          Mostrando <span class="font-semibold">12</span> resultados
+          Mostrando
+          <span class="font-semibold" id="favCount">0</span> resultados
         </p>
       </header>
 
@@ -92,111 +85,17 @@
         class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         id="favorites-grid"
       >
-        <!-- CARD LIBRO -->
-        <article
-          class="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 hover:-translate-y-2 flex flex-col"
-        >
-          <div class="p-4 pb-0">
-            <div
-              class="bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center h-64"
-            >
-              <img
-                src="../images/libro-oz.png"
-                alt="El mago de Oz"
-                class="h-full w-auto object-contain"
-              />
-            </div>
-          </div>
-
-          <div class="p-4 flex flex-col flex-1">
-            <h2 class="text-sm font-semibold mb-1 line-clamp-2">
-              EL MAGO DE OZ - TD
-            </h2>
-            <p class="text-xs text-gray-600 mb-3">
-              Autor: <span class="font-medium">L. Frank Baum</span>
-            </p>
-
-            <div class="mt-auto">
-              <p class="font-bold text-sm mb-3">$13.45</p>
-              <button
-                class="w-full bg-[#355B3E] text-white text-sm py-2 rounded-full font-semibold hover:bg-[#26402B] transition"
-              >
-                Detalles
-              </button>
-            </div>
-          </div>
-        </article>
-
-        <!-- OTRAS CARDS -->
-        <article
-          class="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 hover:-translate-y-2 flex flex-col"
-        >
-          <div class="p-4 pb-0">
-            <div
-              class="bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center h-64"
-            >
-              <img
-                src="../images/libro-wax-wayne.png"
-                alt="Wax & Wayne 4"
-                class="h-full w-auto object-contain"
-              />
-            </div>
-          </div>
-
-          <div class="p-4 flex flex-col flex-1">
-            <h2 class="text-sm font-semibold mb-1 line-clamp-2">
-              WAX & WAYNE 4 EL METAL PERDIDO
-            </h2>
-            <p class="text-xs text-gray-600 mb-3">
-              Autor: <span class="font-medium">Brandon Sanderson</span>
-            </p>
-
-            <div class="mt-auto">
-              <p class="font-bold text-sm mb-3">$26.00</p>
-              <button
-                class="w-full bg-[#355B3E] text-white text-sm py-2 rounded-full font-semibold hover:bg-[#26402B] transition"
-              >
-                Detalles
-              </button>
-            </div>
-          </div>
-        </article>
-
-        <article
-          class="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 hover:-translate-y-2 flex flex-col"
-        >
-          <div class="p-4 pb-0">
-            <div
-              class="bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center h-64"
-            >
-              <img
-                src="../images/libro-corte-rosas.png"
-                alt="Una corte de rosas y espinas"
-                class="h-full w-auto object-contain"
-              />
-            </div>
-          </div>
-
-          <div class="p-4 flex flex-col flex-1">
-            <h2 class="text-sm font-semibold mb-1 line-clamp-2">
-              UNA CORTE DE ROSAS Y ESPINAS
-            </h2>
-            <p class="text-xs text-gray-600 mb-3">
-              Autor: <span class="font-medium">Sarah J. Maas</span>
-            </p>
-
-            <div class="mt-auto">
-              <p class="font-bold text-sm mb-3">$24.95</p>
-              <button
-                class="w-full bg-[#355B3E] text-white text-sm py-2 rounded-full font-semibold hover:bg-[#26402B] transition"
-              >
-                Detalles
-              </button>
-            </div>
-          </div>
-        </article>
+        <!-- El JS insertará las cards aquí -->
       </section>
     </main>
+
+    <!-- MODAL (opcional para mostrar detalles) -->
+    <div
+      id="detailModalOverlay"
+      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+    >
+      <div id="detailModalContent"></div>
+    </div>
 
     <!-- Font Awesome -->
     <script
@@ -204,5 +103,20 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+
+    <!-- Script Favoritos -->
+    <script type="module" src="../js/favs.js"></script>
+    <script type="module" src="../js/main.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      window.addEventListener("pageshow", () => {
+        const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+        if (usuario) {
+          marcarFavoritos(usuario.id);
+        }
+      });
+    </script>
   </body>
 </html>
