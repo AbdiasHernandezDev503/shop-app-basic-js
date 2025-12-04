@@ -43,9 +43,9 @@
 
       <!-- Usuario -->
       <div class="flex items-center gap-6">
-        <div class="flex items-center gap-2 cursor-pointer">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='./mi-cuenta.html'">
           <i class="fa-regular fa-user text-xl"></i>
-          <span class="font-medium">Paola</span>
+          <span id="userName" class="font-medium">Paola</span>
         </div>
         <i
           class="fa-solid fa-cart-shopping cursor-pointer text-xl"
@@ -85,7 +85,10 @@
     </div>
 
     <!-- PRODUCTOS -->
-    <div id="productosContainer" class="w-full flex flex-wrap gap-8 justify-center mt-10 pb-20"></div>
+    <div
+      id="productosContainer"
+      class="w-full flex flex-wrap gap-8 justify-center mt-10 pb-20"
+    ></div>
 
     <!--  MODAL DE CARRITO -->
     <!-- Modal Overlay (vacío hasta que carguemos contenido) -->
@@ -120,7 +123,7 @@
       <div class="p-4 border-b border-gray-300">
         <div class="flex flex-col items-center">
           <i class="fa-regular fa-user text-4xl"></i>
-          <span class="mt-2 font-medium">Invitado</span>
+          <span id="sideUserName" class="mt-2 font-medium">Invitado</span>
           <div class="flex items-center gap-2 mt-2">
             <i class="fa-solid fa-cart-shopping"></i>
             <span class="text-sm">0 Total: $0.00</span>
@@ -180,7 +183,7 @@
         </ul>
       </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="../js/main.js"></script>
   </body>
 </html>

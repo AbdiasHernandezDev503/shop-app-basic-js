@@ -30,22 +30,8 @@
         </tr>
       </thead>
 
-      <tbody class="text-sm">
-
-        <tr class="border-t border-orange-200">
-          <td class="py-3 px-4">LIGHTLARK 01 LIGHTLARK (CANTOS TINTADOS)</td>
-          <td class="py-3 px-4">$34.95</td>
-          <td class="py-3 px-4">1</td>
-          <td class="py-3 px-4">$34.95</td>
-        </tr>
-
-        <tr class="border-t border-orange-200">
-          <td class="py-3 px-4">HIJAS DE LA VENGANZA</td>
-          <td class="py-3 px-4">$34.95</td>
-          <td class="py-3 px-4">1</td>
-          <td class="py-3 px-4">$34.95</td>
-        </tr>
-
+      <tbody id="cartBody" class="text-sm">
+          
       </tbody>
     </table>
 
@@ -53,17 +39,18 @@
 
   <!-- Total -->
   <div class="flex justify-end mt-6 pr-4">
-    <span class="text-xl font-semibold">Total: $ 69.90</span>
+    <span id="cartTotal" class="text-xl font-semibold">Total: $ 00.00</span>
   </div>
 
   <!-- Botones -->
   <div class="flex justify-between items-center mt-6 px-4">
 
-    <button class="bg-white border border-gray-300 rounded-lg shadow px-4 py-2 hover:bg-gray-100">
+    <button class="bg-white border border-gray-300 rounded-lg shadow px-4 py-2 hover:bg-gray-100" 
+      onclick="vaciarCarrito()">
       <i class="fa-solid fa-trash text-xl text-red-700"></i>
     </button>
 
-    <button 
+    <button
       class="border border-orange-400 text-orange-700 px-6 py-2 rounded-lg font-semibold hover:bg-orange-100"
       onclick="closeModal()">
       Cerrar
@@ -77,5 +64,7 @@
   </div>
 
 </d>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module" src="../js/main.js"></script>
 </body>
 </html>
