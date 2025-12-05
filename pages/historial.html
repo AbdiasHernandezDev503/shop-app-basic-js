@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Historial de compras</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body class="bg-[#F4EDE6] min-h-screen flex flex-col">
+    <!-- HEADER -->
+    <header class="w-full py-4 px-6 border-b border-[#E0D3C4] bg-[#F7F1EA]">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img
+            src="../images/logo.png"
+            alt="El Faro del Libro"
+            class="w-10 h-auto"
+          />
+          <span class="font-bold text-[#C5573E] text-xl">
+            EL FARO DEL LIBRO
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="text-sm text-[#7B3A24] hover:text-[#A05A39]"
+          onclick="window.location.href='./mi-cuenta.html'"
+        >
+          <i class="fa-solid fa-arrow-left mr-1"></i>
+          Volver a Mi cuenta
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1 flex justify-center">
+      <div class="w-full max-w-6xl px-6 pb-10 pt-6">
+        <!-- Título -->
+        <h1
+          class="text-2xl md:text-3xl font-semibold text-[#7B3A24] text-center mb-8"
+        >
+          Historial de compras
+        </h1>
+
+        <div
+          class="grid gap-8 md:grid-cols-[1.2fr,1.8fr] bg-[#F7F1EA] rounded-xl shadow-sm px-6 py-6 md:px-8 md:py-8"
+        >
+          <!-- COLUMNA IZQUIERDA: Listado de órdenes -->
+          <div class="flex flex-col h-full">
+            <h2 class="text-lg font-semibold text-[#7B3A24] mb-4">
+              Tus pedidos
+            </h2>
+
+            <p
+              id="historialSinOrdenes"
+              class="text-sm text-[#6C6C6C] italic hidden"
+            >
+              Aún no has realizado compras.
+            </p>
+
+            <div
+              id="listaOrdenes"
+              class="mt-2 space-y-3 max-h-[380px] overflow-y-auto pr-1"
+            >
+           
+            </div>
+          </div>
+
+          <!-- COLUMNA DERECHA -->
+          <div class="flex flex-col h-full">
+            <h2 class="text-lg font-semibold text-[#7B3A24] mb-4">
+              Detalle del pedido
+            </h2>
+
+            <p
+              id="mensajeSinDetalle"
+              class="text-sm text-[#6C6C6C] italic mb-4"
+            >
+              Selecciona un pedido de la lista para ver sus detalles.
+            </p>
+
+            <!-- Informacion general de la orden -->
+            <div
+              id="panelDetalle"
+              class="bg-[#F3ECE4] rounded-lg px-4 py-4 mb-5 hidden"
+            >
+              <p class="text-sm text-[#3D3D3D] mb-1">
+                <span class="font-semibold">Número de pedido:</span>
+                <span id="detalleNumero" class="font-bold">--</span>
+              </p>
+
+              <p class="text-sm text-[#3D3D3D] mb-1">
+                <span class="font-semibold">Fecha:</span>
+                <span id="detalleFecha">--</span>
+              </p>
+
+              <p class="text-sm text-[#3D3D3D] mb-1">
+                <span class="font-semibold">Sucursal de entrega:</span>
+                <span id="detalleSucursal">--</span>
+              </p>
+
+              <p class="text-sm text-[#3D3D3D] mb-1">
+                <span class="font-semibold">Estado:</span>
+                <span id="detalleEstado">--</span>
+              </p>
+
+              <p class="text-sm text-[#3D3D3D] mb-1">
+                <span class="font-semibold">Método de pago:</span>
+                <span id="detalleMetodoPago">--</span>
+              </p>
+
+              <p class="text-sm text-[#3D3D3D] mt-2">
+                <span class="font-semibold">Total pagado:</span>
+                <span id="detalleTotal" class="font-bold">$0.00</span>
+              </p>
+            </div>
+
+            <!-- Tabla de productos -->
+            <div class="overflow-x-auto">
+              <table
+                class="w-full text-sm md:text-base border border-[#E2CBB7] text-neutral-900"
+              >
+                <thead class="bg-[#FAF3EC]">
+                  <tr class="border-b border-[#E2CBB7]">
+                    <th
+                      class="py-2 px-4 text-left border-r border-[#E2CBB7]"
+                    >
+                      Producto
+                    </th>
+                    <th
+                      class="py-2 px-4 text-center border-r border-[#E2CBB7]"
+                    >
+                      Cantidad
+                    </th>
+                    <th class="py-2 px-4 text-right">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody id="detalleItemsBody">
+               
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="../js/historial.js"></script>
+  </body>
+</html>

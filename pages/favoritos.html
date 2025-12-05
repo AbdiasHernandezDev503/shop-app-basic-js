@@ -8,7 +8,7 @@
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fuente Montserrat -->
+    <!-- Fuente -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
@@ -27,13 +27,14 @@
     <nav
       class="w-full flex flex-wrap items-center justify-between gap-4 px-4 sm:px-6 lg:px-10 py-4 bg-[#F7F2EB] shadow"
     >
-      <!-- Logo + Hamburguesa -->
+      <!-- Logo + Menu Hamburguesa -->
       <div class="flex items-center gap-3">
         <button class="text-xl cursor-pointer lg:hidden">
           <i class="fa-solid fa-bars"></i>
         </button>
 
         <img
+          onclick="window.location.href='./inicio.html'"
           src="../images/logo.png"
           class="w-12"
           alt="Logo El Faro del Libro"
@@ -89,7 +90,7 @@
       </section>
     </main>
 
-    <!-- MODAL (opcional para mostrar detalles) -->
+    <!-- MODAL -->
     <div
       id="detailModalOverlay"
       class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"

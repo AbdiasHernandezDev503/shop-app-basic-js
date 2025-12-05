@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pago exitoso</title>
 
-    <!-- Tailwind -->
+ 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Font Awesome (solo si querés usar el ícono de check) -->
+   
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -22,7 +22,7 @@
     >
       <!-- Logo -->
       <div class="flex flex-col items-center mb-6">
-        <!--logo existente -->
+      
         <img
           src="../images/logo.png"
           alt="El Faro del Libro"
@@ -34,14 +34,14 @@
         </span>
       </div>
 
-      <!-- Icono de check -->
+     
       <div
         class="w-14 h-14 mx-auto mb-6 rounded-full border-2 border-[#556B5A] flex items-center justify-center"
       >
         <i class="fa-solid fa-check text-2xl text-[#556B5A]"></i>
       </div>
 
-      <!-- Mensajes -->
+   
       <h1 class="text-xl md:text-2xl font-bold text-neutral-900 mb-4">
         Su pago ha sido exitoso
       </h1>
@@ -52,7 +52,7 @@
 
       <p class="text-base md:text-lg text-neutral-900 mb-2">
         Tu número de orden es
-        <!-- agregamos id para actualizarlo con JS -->
+       
         <span id="orderNumber" class="font-extrabold">#8023902</span>
       </p>
 
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <!-- SCRIPT: mostrar número real de la orden -->
+
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const ultimaOrdenJSON = localStorage.getItem("ultimaOrden");
@@ -82,13 +82,13 @@
           const spanNumero = document.getElementById("orderNumber");
           if (!spanNumero) return;
 
-          // Usamos la referencia si existe, si no el id de la orden
+          // referencia si existe, si no el id de la orden
           const referencia = orden.referencia || orden.id;
           if (referencia) {
             spanNumero.textContent = "#" + referencia;
           }
 
-          // Opcional: limpiar la referencia temporal para el próximo pago
+       
           localStorage.removeItem("referenciaPagoActual");
         } catch (e) {
           console.error("Error leyendo ultimaOrden:", e);

@@ -15,7 +15,7 @@
     <nav
       class="w-full flex items-center justify-between px-6 py-4 bg-[#F7F2EB] shadow"
     >
-      <!-- Logo + Hamburguesa -->
+      <!-- Logo + Menu hamburguesa -->
       <div class="flex items-center gap-3">
         <i
           class="fa-solid fa-bars text-xl cursor-pointer"
@@ -62,17 +62,30 @@
     <!-- BANNER -->
     <div class="w-full flex justify-center mt-6">
       <img
+        id="bannerSlider"
         src="../images/banner.png"
-        class="rounded-lg shadow-md w-[55%]"
+        class="rounded-lg shadow-md w-[55%] cursor-pointer"
         alt="Banner"
       />
     </div>
 
     <!-- Dots -->
     <div class="flex justify-center mt-2">
-      <div class="w-2 h-2 bg-gray-700 rounded-full mx-1"></div>
-      <div class="w-2 h-2 bg-gray-400 rounded-full mx-1"></div>
-      <div class="w-2 h-2 bg-gray-400 rounded-full mx-1"></div>
+      <button
+        class="w-2 h-2 bg-gray-700 rounded-full mx-1"
+        type="button"
+        data-banner-index="0"
+      ></button>
+      <button
+        class="w-2 h-2 bg-gray-400 rounded-full mx-1"
+        type="button"
+        data-banner-index="1"
+      ></button>
+      <button
+        class="w-2 h-2 bg-gray-400 rounded-full mx-1"
+        type="button"
+        data-banner-index="2"
+      ></button>
     </div>
 
     <!-- CATEGORÍA -->
@@ -94,7 +107,7 @@
     ></div>
 
     <!--  MODAL DE CARRITO -->
-    <!-- Modal Overlay (vacío hasta que carguemos contenido) -->
+ 
     <div
       id="modalOverlay"
       class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
@@ -193,7 +206,12 @@
         </ul>
       </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
+    <script src="../js/slider-inicio.js"></script>
+
     <script type="module" src="../js/main.js"></script>
     <script>
       window.addEventListener("pageshow", () => {

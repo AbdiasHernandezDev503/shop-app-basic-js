@@ -45,7 +45,7 @@ async function cargarFavoritos() {
 
     const libros = snapLibros.val();
 
-    // Filtrar SOLO los favoritos
+    
     const resultados = idsFavoritos
       .map((id) => ({ id, ...libros[id] }))
       .filter((l) => l.titulo);
@@ -107,5 +107,5 @@ window.openDetailModal = function (idLibro) {
   console.warn("Llamando modal de detalles desde favoritos:", idLibro);
 };
 
-// Ejecutar carga
+
 cargarFavoritos();

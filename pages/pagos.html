@@ -157,7 +157,7 @@
       } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
 
       async function cargarDatosPagos() {
-        // 1. Obtener usuario activo
+        //  Obtener usuario activo
         const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
 
         if (!usuario || !usuario.id) {
@@ -167,14 +167,14 @@
 
         const nombre = usuario.nombre || "Usuario";
 
-        // 2. Nombres
+        //  Nombres
         const navbarNameSpan = document.getElementById("pagosNavbarUserName");
         const rightNameSpan = document.getElementById("pagosRightUserName");
 
         if (navbarNameSpan) navbarNameSpan.textContent = nombre;
         if (rightNameSpan) rightNameSpan.textContent = nombre;
 
-        // 3. Sucursal seleccionada (desde localStorage)
+        //  Sucursal seleccionada (desde localStorage)
         const sucursalTituloEl = document.getElementById("pagosSucursalTitulo");
         const sucursalDescEl = document.getElementById(
           "pagosSucursalDescripcion"
@@ -200,7 +200,7 @@
         if (sucursalTituloEl) sucursalTituloEl.textContent = tituloSucursal;
         if (sucursalDescEl) sucursalDescEl.textContent = descSucursal;
 
-        // 4. Referencia
+        // Referencia
         const refSpan = document.getElementById("pagosReferencia");
         if (refSpan) {
           let referencia = localStorage.getItem("referenciaPagoActual");
@@ -214,7 +214,7 @@
           refSpan.textContent = referencia;
         }
 
-        // 5. Total del carrito
+        //  Total del carrito
         const navbarTotalSpan =
           document.getElementById("pagosNavbarCartTotal");
         const pageTotalSpan = document.getElementById("pagosPageTotal");

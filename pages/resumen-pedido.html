@@ -11,35 +11,39 @@
 
   <body class="bg-[#FAF3EC] min-h-screen">
     <div class="max-w-6xl mx-auto px-6 py-10">
-
       <!-- Título -->
-      <h1 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-6">
-        ¡Gracias por tu compra, Paola!
+      <h1
+        id="resumenTitulo"
+        class="text-2xl md:text-3xl font-bold text-neutral-900 mb-6"
+      >
+        ¡Gracias por tu compra!
       </h1>
 
-      <div class="grid grid-cols-1 md:grid-cols-[1.1fr_1.3fr] gap-10 items-start">
+      <div
+        class="grid grid-cols-1 md:grid-cols-[1.1fr_1.3fr] gap-10 items-start"
+      >
         <!-- Columna izquierda: texto -->
         <div class="space-y-3 text-sm md:text-base text-neutral-900">
           <p>Tu pedido se ha procesado correctamente.</p>
 
           <p>
             <span class="font-semibold">Número de pedido:</span>
-            <span class="font-bold"> #8023902</span>
+            <span id="resumenNumeroOrden" class="font-bold"> #0000000</span>
           </p>
 
           <p>
             <span class="font-semibold">Fecha:</span>
-            01 de diciembre de 2025
+            <span id="resumenFecha">--</span>
           </p>
 
           <p>
             <span class="font-semibold">Sucursal de entrega:</span>
-            Centro comercial Las Ramblas
+            <span id="resumenSucursal">--</span>
           </p>
 
           <p class="mt-4">
             <span class="font-semibold">Total pagado:</span>
-            $69.90
+            <span id="resumenTotalTexto">$0.00</span>
           </p>
         </div>
 
@@ -59,25 +63,8 @@
                 <th class="py-2 px-4 text-right">Sub&nbsp;Total</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="border-b border-[#E2CBB7]">
-                <td class="py-2 px-4 border-r border-[#E2CBB7]">
-                  LIGHTLARK 01 LIGHTLARK (CANTOS TINTADOS)
-                </td>
-                <td class="py-2 px-4 text-center border-r border-[#E2CBB7]">
-                  1
-                </td>
-                <td class="py-2 px-4 text-right">$34.95</td>
-              </tr>
-              <tr>
-                <td class="py-2 px-4 border-r border-[#E2CBB7]">
-                  HIJAS DE LA VENGANZA
-                </td>
-                <td class="py-2 px-4 text-center border-r border-[#E2CBB7]">
-                  1
-                </td>
-                <td class="py-2 px-4 text-right">$34.95</td>
-              </tr>
+            <tbody id="resumenOrderItems">
+              <!-- Aquí se van a insertar las filas con JS -->
             </tbody>
           </table>
 
@@ -85,7 +72,7 @@
           <div class="mt-4 flex justify-end">
             <p class="text-base md:text-lg text-neutral-900">
               <span class="font-semibold mr-1">Total</span>
-              <span class="font-bold">$69.90</span>
+              <span id="resumenTotalTabla" class="font-bold">$0.00</span>
             </p>
           </div>
         </div>
@@ -101,5 +88,8 @@
         </button>
       </div>
     </div>
+
+    <!-- JS: leer la orden desde Firebase y mostrar el comprobante -->
+    <script type="module" src="../js/resumen-pedido.js"></script>
   </body>
 </html>
